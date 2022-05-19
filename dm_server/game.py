@@ -7,6 +7,8 @@ class Minesweeper:
     self._height = 9
     self._matrix = []
     self._bomb_coords = []
+    self._flags = 0
+    self._flag_coords = []
 
   def create_grid(self):
     self._matrix = [[0 for x in range(self._width)] for y in range(self._height)]
@@ -56,6 +58,15 @@ class Minesweeper:
     for block in self._matrix:
         print(h, *block)
         h += 1
+
+  def get_jogada(self,x,y,jogada):
+      if jogada == 'Open':
+           pass
+      if jogada == 'Flag':
+          self._matrix[x][y] = 'F'
+          self._flags += 1
+          self._flag_coords.append(self.conjoin_coords(x,y))
+
 
 obj_temp = Minesweeper()
 obj_temp.print_matrix()

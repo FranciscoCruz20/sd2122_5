@@ -1,3 +1,4 @@
+
 class Ui:
 
     def __init__(self):
@@ -56,20 +57,33 @@ class Ui:
                                 "Introduza a percentagem de bombas do tabuleiro : "))
             self.create_fake_grid()
             self.print_matrix()
-            self.jogada()
+            coord_x = 0
+            coord_y = 0
+            while coord_x > self._width or coord_x == 0:
+                coord_x = int(input("Insira a coordenada X: "))
+            while coord_y > self._height or coord_y == 0:
+                coord_y = int(input("Insira a coordenada Y: "))
+            choice = self.jogada()
+            if choice == 'Open':
+                pass
+            if choice == 'Flag':
+                self._matrix[coord_x-1][coord_y-1]='F'
+            self.print_matrix()
 
     def jogada(self):
-        cord_x = 0
-        cord_y = 0
-        while cord_x > self._width or cord_x == 0:
-            cord_x = int(input("Insira a coordenada X: "))
-        while cord_y > self._height or cord_y == 0:
-            cord_y = int(input("Insira a coordenada Y: "))
-        choice=0
+
+        choice = 0
         while choice > 2 or choice == 0:
             choice = int(input("Escolha uma ação\n"
                            " 1 - Abrir casa\n"
                            " 2 - Marcar com bandeira\n->"))
+
+        if choice == 1:
+            return 'Open'
+        if choice == 2:
+            return 'Flag'
+
+
 
 
 
