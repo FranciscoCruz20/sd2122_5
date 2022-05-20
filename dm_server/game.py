@@ -7,10 +7,13 @@ class Minesweeper:
     self._height = 9
     self._matrix = []
     self._bomb_coords = []
+    self._score = 0
     self._flags = 0
     self._flag_coords = []
 
-  def create_grid(self):
+  def create_grid(self,x,y):
+    self._width = x
+    self._height = y
     self._matrix = [[0 for x in range(self._width)] for y in range(self._height)]
     bomb_perc = random.randrange(5,24)
     bomb_perc = (bomb_perc * 100) / (self._width * self._height)
@@ -49,8 +52,10 @@ class Minesweeper:
   def conjoin_coords(self, x, y):
     return str(x + "," + y)
 
+  def translate_coords(self, msg: str):
+    return
+
   def print_matrix(self):
-    self.create_grid()
     h = 1
     for w in range(self._width + 1):
         print(w, '', end='')
@@ -59,13 +64,23 @@ class Minesweeper:
         print(h, *block)
         h += 1
 
-  def get_jogada(self,x,y,jogada):
-      if jogada == 'Open':
-           pass
-      if jogada == 'Flag':
-          self._matrix[x][y] = 'F'
-          self._flags += 1
-          self._flag_coords.append(self.conjoin_coords(x,y))
+  def get_flagged(self,x,y):
+      if self._matrix[x][y] == 9:
+          self._score += 1
+      else:
+          self._score -= 3
+
+  def get_coord_value(self,x,y):
+      return self._matrix[y][x]
+
+
+  #def get_jogada(self,x,y,jogada): Obsoleto/Não necessário
+      #if jogada == 'Open':
+           #pass
+      #if jogada == 'Flag':
+          #self._matrix[x][y] = 'F'
+          #self._flags += 1
+          #self._flag_coords.append(self.conjoin_coords(x,y))
 
 
 obj_temp = Minesweeper()

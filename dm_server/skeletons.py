@@ -1,33 +1,55 @@
-import server as server
 import logging
 import socket
+from game import Minesweeper as minesweeper
 from sockets_mod import Socket
 
+COMMAND_SIZE = 9
+INT_SIZE = 8
+CRT_OP = "crt      "
+OPN_OP = "opn      "
+FLG_OP = "flg      "
+BYE_OP = "bye      "
+STOP_SERVER_OP = "terminate"
+PORT = 35000
+
+LOG_FILENAME = "math-server.log"
+LOG_LEVEL = logging.DEBUG
 
 class MathServer(Socket):
-    def __init__(self, port: int, math_server: server.MathServer) -> None:
+    def __init__(self, port: int, game: minesweeper) -> None:
         """
         Creates a client given the server server to use
         :param port: The math server port of the host the client will use
         """
         super().__init__()
         self._port = port
-        self._server = math_server
-        logging.basicConfig(filename=server.LOG_FILENAME,
-                            level=server.LOG_LEVEL,
+        self._server = game
+        logging.basicConfig(filename=LOG_FILENAME,
+                            level=LOG_LEVEL,
                             format='%(asctime)s (%(levelname)s): %(message)s')
 
     def position_info(self) -> None:
-        a = self.receive_int(server.INT_SIZE)
-        b = self.receive_int(server.INT_SIZE)
-        result = self._server.add(a, b)
-        self.send_int(result, server.INT_SIZE)
+        a = self.receive_int(INT_SIZE)
+        b = self.receive_int(INT_SIZE)
+        result = self._server.get_coord_value(a,b)
+        self.send_int(result, INT_SIZE)
 
+    def generate_grid(self) -> None:
+        a = self.receive_int(INT_SIZE)
+        b = self.receive_int(INT_SIZE)
+        result = self._server.create_grid(a, b)
+        self.send_int(result, INT_SIZE)
+
+    def flag_it_up(self) -> None:
+        a = self.receive_int(INT_SIZE)
+        b = self.receive_int(INT_SIZE)
+        self._server.get_flagged(a, b)
 
     def run(self) -> None:
         """
         Runs the server server until the client sends a "terminate" action
         """
+
         current_socket = socket.socket()
         current_socket.bind(('', self._port))
         current_socket.listen(1)
@@ -45,16 +67,18 @@ class MathServer(Socket):
         logging.info("Server stopped")
 
     def dispatch_request(self) -> (bool, bool):
-        request_type = self.receive_str(server.COMMAND_SIZE)
+        request_type = self.receive_str(COMMAND_SIZE)
         keep_running = True
         last_request = False
-        if request_type == server.ADD_OP:
-            self.add()
-        elif request_type == server.SYM_OP:
-            self.sym()
-        elif request_type == server.BYE_OP:
+        if request_type == CRT_OP:
+            self.generate_grid()
+        elif request_type == OPN_OP:
+            self.position_info()
+        elif request_type == FLG_OP:
+            self.flag_it_up()
+        elif request_type == BYE_OP:
             last_request = True
-        elif request_type == server.STOP_SERVER_OP:
+        elif request_type == STOP_SERVER_OP:
             last_request = True
             keep_running = False
         return keep_running, last_request
