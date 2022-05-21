@@ -82,6 +82,22 @@ class Minesweeper:
           #self._flags += 1
           #self._flag_coords.append(self.conjoin_coords(x,y))
 
+  def check_around(self, x, y):
+      range_values = [-1, 0, 1]
+      if self._matrix[x][y] != '0':
+          pass
+      else:
+          for i in range_values:
+              for j in range_values:
+                  if self._matrix[x + j][y + i] == '0':
+                      self._matrix[x + j][y + i] = ' '
+
+      if x + 1 != self._width and y + 1 != self._height:
+          self.check_around(x, y + 1)
+          self.check_around(x + 1, y)
 
 obj_temp = Minesweeper()
+obj_temp.create_grid(9,9)
 obj_temp.print_matrix()
+
+

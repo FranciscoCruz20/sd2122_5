@@ -65,10 +65,25 @@ class Ui:
                 coord_y = int(input("Insira a coordenada Y: "))
             choice = self.jogada()
             if choice == 'Open':
-                pass
+                self.check_around(coord_x-1,coord_y-1)
             if choice == 'Flag':
                 self._matrix[coord_x-1][coord_y-1]='F'
             self.print_matrix()
+
+    def check_around(self, x, y):
+        range_values=[-1,0,1]
+        if self._matrix[x][y]!='#':
+            pass
+        else:
+            for i in range_values:
+                for j in range_values:
+                    if self._matrix[x+j][y+i] == '#':
+                        self._matrix[x+j][y+i] = ' '
+
+
+        if x+1!= self._width and y+1!= self._height:
+            self.check_around(x,y+1)
+            self.check_around(x+1,y)
 
     def jogada(self):
 
