@@ -15,7 +15,7 @@ PORT = 35000
 LOG_FILENAME = "math-server.log"
 LOG_LEVEL = logging.DEBUG
 
-class MathServer(Socket):
+class GameServer(Socket):
     def __init__(self, port: int, game: minesweeper) -> None:
         """
         Creates a client given the server server to use
@@ -37,8 +37,8 @@ class MathServer(Socket):
     def generate_grid(self) -> None:
         a = self.receive_int(INT_SIZE)
         b = self.receive_int(INT_SIZE)
-        result = self._server.create_grid(a, b)
-        self.send_int(result, INT_SIZE)
+        c = self.receive_int(INT_SIZE)
+        self._server.create_grid(a, b, c)
 
     def flag_it_up(self) -> None:
         a = self.receive_int(INT_SIZE)
@@ -72,6 +72,7 @@ class MathServer(Socket):
         last_request = False
         if request_type == CRT_OP:
             self.generate_grid()
+            self._server.print_matrix()
         elif request_type == OPN_OP:
             self.position_info()
         elif request_type == FLG_OP:

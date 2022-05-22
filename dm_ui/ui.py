@@ -1,7 +1,9 @@
+from stubs import GameServer
 
 class Ui:
 
-    def __init__(self):
+    def __init__(self, gameserver: GameServer):
+        self._server = gameserver
         self._width = 0
         self._height = 0
         self._f_matrix = []
@@ -18,15 +20,6 @@ class Ui:
 
     def create_fake_grid(self):
         self._matrix = [[chr(35) for x in range(self._width)] for y in range(self._height)]
-
-
-
-    #Alterar para o lado do cliente
-    #Quantidade de bombas entre 5% a 20% - Feito
-    #Mandar coordenadas x - Feito
-    #Mandar coordenadas y - Feito
-    #Quando inseridas as coordenadas escolher entre - Abrir celula OU - Colocar bandeira - Feito
-    #Por o print em loop junto com o acima menos as bombas
 
     def menu(self):
         print("Bem-Vindo ao Minesweeper!\n"
@@ -55,6 +48,7 @@ class Ui:
                 self._bomb_perc = int(input("Valor minimo - 5\n"
                                 "Valor máximo - 20\n"
                                 "Introduza a percentagem de bombas do tabuleiro : "))
+            self._server.create_grid(self._width,self._height,self._bomb_perc)
             self.create_fake_grid()
             self.print_matrix()
             coord_x = 0
@@ -65,9 +59,11 @@ class Ui:
                 coord_y = int(input("Insira a coordenada Y: "))
             choice = self.jogada()
             if choice == 'Open':
-                self.check_around(coord_x-1,coord_y-1)
+                self._matrix[coord_y-1][coord_x-1] = str(self._server.open_position(coord_y-1,coord_x-1))
+                #self.check_around(coord_x-1,coord_y-1)
             if choice == 'Flag':
                 self._matrix[coord_x-1][coord_y-1]='F'
+                self._server.flagging(coord_y,coord_x)
             self.print_matrix()
 
     def check_around(self, x, y):
@@ -97,14 +93,3 @@ class Ui:
             return 'Open'
         if choice == 2:
             return 'Flag'
-
-
-
-
-
-
-
-
-
-obj = Ui()
-obj.menu()
