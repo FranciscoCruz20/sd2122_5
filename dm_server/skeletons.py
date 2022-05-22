@@ -11,6 +11,7 @@ FLG_OP = "flg      "
 BYE_OP = "bye      "
 STOP_SERVER_OP = "terminate"
 PORT = 35000
+MSG_STR = 40
 
 LOG_FILENAME = "math-server.log"
 LOG_LEVEL = logging.DEBUG
@@ -83,3 +84,10 @@ class GameServer(Socket):
             last_request = True
             keep_running = False
         return keep_running, last_request
+
+
+    def get_name(self):
+        logging.info("conectado:" + str(PORT))
+        name_recebido: bytes = sockets_mod.receive_str(MSG_STR)
+        logging.debug("player registrado:" + str(name_recebido))
+

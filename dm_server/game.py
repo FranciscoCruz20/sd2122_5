@@ -10,6 +10,7 @@ class Minesweeper:
     self._score = 0
     self._flags = 0
     self._flag_coords = []
+    self._name_list = []
 
   def create_grid(self,x,y,bomb_perc):
     self._width = x

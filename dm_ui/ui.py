@@ -1,4 +1,5 @@
 from stubs import GameServer
+from sockets_mod import Socket
 
 class Ui:
 
@@ -22,6 +23,7 @@ class Ui:
         self._matrix = [[chr(35) for x in range(self._width)] for y in range(self._height)]
 
     def menu(self):
+        self.register_name()
         print("Bem-Vindo ao Minesweeper!\n"
               "1 - Jogar\n"
               "2 - Ajuda\n"
@@ -50,21 +52,28 @@ class Ui:
                                 "Introduza a percentagem de bombas do tabuleiro : "))
             self._server.create_grid(self._width,self._height,self._bomb_perc)
             self.create_fake_grid()
-            self.print_matrix()
-            coord_x = 0
-            coord_y = 0
-            while coord_x > self._width or coord_x == 0:
-                coord_x = int(input("Insira a coordenada X: "))
-            while coord_y > self._height or coord_y == 0:
-                coord_y = int(input("Insira a coordenada Y: "))
-            choice = self.jogada()
-            if choice == 'Open':
-                self._matrix[coord_y-1][coord_x-1] = str(self._server.open_position(coord_y-1,coord_x-1))
-                #self.check_around(coord_x-1,coord_y-1)
-            if choice == 'Flag':
-                self._matrix[coord_x-1][coord_y-1]='F'
-                self._server.flagging(coord_y,coord_x)
-            self.print_matrix()
+            self.choice_play()
+
+    def choice_play(self):
+
+        self.print_matrix()
+        coord_x = 0
+        coord_y = 0
+        while coord_x > self._width or coord_x == 0:
+            coord_x = int(input("Insira a coordenada X: "))
+        while coord_y > self._height or coord_y == 0:
+            coord_y = int(input("Insira a coordenada Y: "))
+        choice = self.jogada()
+        if choice == 'Open':
+            self._matrix[coord_y-1][coord_x-1] = str(self._server.open_position(coord_y-1,coord_x-1))
+            self.check_around(coord_x-1,coord_y-1)
+        if choice == 'Flag':
+            self._matrix[coord_y-1][coord_x-1]='F'
+            self._server.flagging(coord_y,coord_x)
+
+
+        self.choice_play()
+
 
     def check_around(self, x, y):
         range_values=[-1,0,1]
@@ -78,8 +87,8 @@ class Ui:
 
 
         if x+1!= self._width and y+1!= self._height:
-            self.check_around(x,y+1)
-            self.check_around(x+1,y)
+            self.check_around(x, y + 1)
+            self.check_around(x + 1, y)
 
     def jogada(self):
 
@@ -91,5 +100,11 @@ class Ui:
 
         if choice == 1:
             return 'Open'
+
         if choice == 2:
             return 'Flag'
+
+    def register_name(self):
+        name = (input("Digite o seu nome de jogador:"))
+        send_name: sockets_mod.send_str(name)
+
