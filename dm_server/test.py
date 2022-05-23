@@ -1,4 +1,5 @@
 import random
+import csv
 
 class Minesweeper:
 
@@ -96,11 +97,27 @@ class Minesweeper:
           self.check_around(x, y + 1)
           self.check_around(x + 1, y)
 
-obj_temp = Minesweeper()
-obj_temp.create_grid(9,9)
-obj_temp.print_matrix()
+#Srry queria testar os nomes depois tira pra testares
+#obj_temp = Minesweeper()
+#obj_temp.create_grid(9,9)
+#obj_temp.print_matrix()
 
-x_test = int(input('Cord X'))
-y_test = int(input('Cord Y'))
-obj_temp.check_around(x_test-1,y_test-1)
-obj_temp.print_matrix()
+#x_test = int(input('Cord X'))
+#y_test = int(input('Cord Y'))
+#obj_temp.check_around(x_test-1,y_test-1)
+#obj_temp.print_matrix()
+
+def file_read_write(a: str):
+    name_not_here = False
+    with open('Nomes_Jogadores', newline='') as csvfile:
+        csvreader = csv.reader(csvfile)
+        for row in csvreader:
+            if a in row:
+                name_not_here = True
+    with open('Nomes_Jogadores', 'a', newline='') as csvfile:
+        if name_not_here == False:
+            writer = csv.writer(csvfile)
+            writer.writerow([a])
+    csvfile.close()
+
+file_read_write("Mariense")

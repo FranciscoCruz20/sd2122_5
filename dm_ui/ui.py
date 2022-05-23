@@ -26,8 +26,7 @@ class Ui:
         self.register_name()
         print("Bem-Vindo ao Minesweeper!\n"
               "1 - Jogar\n"
-              "2 - Ajuda\n"
-              "3 - Quit\n")
+              "2 - Quit\n")
         option = int(input("Introduza a sua opção: "))
         if option == 1:
             self._width = int(input("Valor minimo - 9 \n"
@@ -53,6 +52,7 @@ class Ui:
             self._server.create_grid(self._width,self._height,self._bomb_perc)
             self.create_fake_grid()
             self.choice_play()
+            print("Game Ended")
 
     def choice_play(self):
 
@@ -65,14 +65,20 @@ class Ui:
             coord_y = int(input("Insira a coordenada Y: "))
         choice = self.jogada()
         if choice == 'Open':
-            self._matrix[coord_y-1][coord_x-1] = str(self._server.open_position(coord_y-1,coord_x-1))
-            self.check_around(coord_x-1,coord_y-1)
-        if choice == 'Flag':
+            pos_info_char = self._server.open_position(coord_y-1,coord_x-1)
+            if pos_info_char == 0:
+                self.check_around(coord_x-1,coord_y-1)
+                self.choice_play()
+            elif pos_info_char == 9:
+                self._matrix[coord_y - 1][coord_x - 1] = chr(184)
+                print("Bomba encontrada - Score final = 0")
+            else:
+                self._matrix[coord_y - 1][coord_x - 1] = str(pos_info_char)
+
+        elif choice == 'Flag':
             self._matrix[coord_y-1][coord_x-1]='F'
             self._server.flagging(coord_y,coord_x)
-
-
-        self.choice_play()
+            self.choice_play()
 
 
     def check_around(self, x, y):
@@ -106,5 +112,5 @@ class Ui:
 
     def register_name(self):
         name = (input("Digite o seu nome de jogador:"))
-        send_name: sockets_mod.send_str(name)
+        self._server.send_name(name)
 

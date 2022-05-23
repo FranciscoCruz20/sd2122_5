@@ -53,3 +53,7 @@
 2022-05-22 17:34:35,355 (DEBUG): Client ('127.0.0.1', 60102) just connected
 2022-05-22 17:34:51,896 (INFO): Waiting for clients to connect on port 35000
 2022-05-22 17:35:24,884 (DEBUG): Client ('127.0.0.1', 60139) just connected
+2022-05-23 19:09:14,422 (INFO): Waiting for clients to connect on port 35000
+2022-05-23 20:58:07,362 (INFO): Waiting for clients to connect on port 35000
+2022-05-23 20:58:09,777 (INFO): Waiting for clients to connect on port 35000
+2022-05-23 20:58:15,926 (DEBUG): Client ('127.0.0.1', 54041) just connected

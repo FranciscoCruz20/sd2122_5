@@ -1,4 +1,5 @@
 import random
+import csv
 
 class Minesweeper:
 
@@ -83,7 +84,24 @@ class Minesweeper:
               for j in range_values:
                   if self._matrix[x + j][y + i] == '0':
                       self._matrix[x + j][y + i] = ' '
-
       if x + 1 != self._width and y + 1 != self._height:
           self.check_around(x, y + 1)
           self.check_around(x + 1, y)
+          if x + 1 != self._width and y + 1 != self._height:
+            self.check_around(x, y + 1)
+            self.check_around(x + 1, y)
+
+  def file_read_write(self, a: str):
+    name_not_here = False
+    with open('Nomes_Jogadores', newline='') as csvfile:
+        csvreader = csv.reader(csvfile)
+        for row in csvreader:
+            if a in row:
+                name_not_here = True
+    with open('Nomes_Jogadores', 'a', newline='') as csvfile:
+        if name_not_here == False:
+            writer = csv.writer(csvfile)
+            writer.writerow([a])
+    csvfile.close()
+
+

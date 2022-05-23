@@ -2,12 +2,14 @@ import logging
 import socket
 from game import Minesweeper as minesweeper
 from sockets_mod import Socket
+import csv
 
 COMMAND_SIZE = 9
 INT_SIZE = 8
 CRT_OP = "crt      "
 OPN_OP = "opn      "
 FLG_OP = "flg      "
+NAM_OP = "nam      "
 BYE_OP = "bye      "
 STOP_SERVER_OP = "terminate"
 PORT = 35000
@@ -46,6 +48,11 @@ class GameServer(Socket):
         b = self.receive_int(INT_SIZE)
         self._server.get_flagged(a, b)
 
+    def name_on_the_list(self) -> None:
+        a = self.receive_str(COMMAND_SIZE)
+        self._server.file_read_write(a)
+
+
     def run(self) -> None:
         """
         Runs the server server until the client sends a "terminate" action
@@ -78,16 +85,12 @@ class GameServer(Socket):
             self.position_info()
         elif request_type == FLG_OP:
             self.flag_it_up()
+        elif request_type == NAM_OP:
+            self.name_on_the_list()
         elif request_type == BYE_OP:
             last_request = True
         elif request_type == STOP_SERVER_OP:
             last_request = True
             keep_running = False
         return keep_running, last_request
-
-
-    def get_name(self):
-        logging.info("conectado:" + str(PORT))
-        name_recebido: bytes = sockets_mod.receive_str(MSG_STR)
-        logging.debug("player registrado:" + str(name_recebido))
 
