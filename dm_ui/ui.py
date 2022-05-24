@@ -9,6 +9,7 @@ class Ui:
         self._height = 0
         self._f_matrix = []
         self._bomb_perc = 0
+        self._tiles = 0
 
     def print_matrix(self):
         h = 1
@@ -45,11 +46,12 @@ class Ui:
                                          "Valor minimo - 9 \n"
                                          "Valor Máximo - 24 \n"
                                          "Introduza o valor para a altura : "))
+
             while self._bomb_perc > 20 or self._bomb_perc < 5:
                 self._bomb_perc = int(input("Valor minimo - 5\n"
                                 "Valor máximo - 20\n"
                                 "Introduza a percentagem de bombas do tabuleiro : "))
-            self._server.create_grid(self._width,self._height,self._bomb_perc)
+            self._tiles = self._server.create_grid(self._width,self._height,self._bomb_perc)
             self.create_fake_grid()
             self.choice_play()
             print("Game Ended")
@@ -72,6 +74,8 @@ class Ui:
             elif pos_info_char == 9:
                 self._matrix[coord_y - 1][coord_x - 1] = chr(184)
                 print("Bomba encontrada - Score final = 0")
+            elif self._tiles == 0 and pos_info_char != 9:
+                print("Victory - ", self._server.scoring_out())
             else:
                 self._matrix[coord_y - 1][coord_x - 1] = str(pos_info_char)
 

@@ -8,6 +8,7 @@ class Minesweeper:
     self._height = 9
     self._matrix = []
     self._bomb_coords = []
+    self._tiles = 0
     self._score = 0
     self._flags = 0
     self._flag_coords = []
@@ -18,7 +19,9 @@ class Minesweeper:
     self._height = y
     self._matrix = [[0 for x in range(self._width)] for y in range(self._height)]
     bombs = (bomb_perc * 100) / (self._width * self._height)
-    for i in range(round(bombs)):
+    bombs = round(bombs)
+    self._tiles = (self._width * self._height) - bombs
+    for i in range(bombs):
         x_rng = random.randrange(0,self._width)
         y_rng = random.randrange(0,self._height)
         conj = self.conjoin_coords(str(x_rng),str(y_rng))
@@ -50,6 +53,7 @@ class Minesweeper:
             if (x_rng >= 0 and x_rng <= self._height-1) and (y_rng >= 0 and y_rng <= self._height-2) and self._matrix[y_rng + 1][x_rng] != 9:
                 self._matrix[y_rng + 1][x_rng] += 1  # bottom center
 
+    return self._tiles
 
   def conjoin_coords(self, x, y):
     return str(x + "," + y)
@@ -71,6 +75,9 @@ class Minesweeper:
           self._score += 1
       else:
           self._score -= 3
+
+  def get_score(self):
+      return self._score
 
   def get_coord_value(self,x,y):
       return self._matrix[y][x]

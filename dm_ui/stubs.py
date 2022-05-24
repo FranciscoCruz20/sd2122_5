@@ -7,6 +7,7 @@ CRT_OP = "crt      "
 OPN_OP = "opn      "
 FLG_OP = "flg      "
 NAM_OP = "nam      "
+SCR_OP = "scr      "
 BYE_OP = "bye      "
 STOP_SERVER_OP = "terminate"
 SERVER_ADDRESS = "localhost"
@@ -33,6 +34,7 @@ class GameServer(Socket):
         self.send_int(a, INT_SIZE)
         self.send_int(b, INT_SIZE)
         self.send_int(c, INT_SIZE)
+        return self.receive_int(INT_SIZE)
 
     def open_position(self, a: int,  b: int) -> int:
         """
@@ -44,6 +46,16 @@ class GameServer(Socket):
         self.send_str(OPN_OP)
         self.send_int(a, INT_SIZE)
         self.send_int(b, INT_SIZE)
+        return self.receive_int(INT_SIZE)
+
+    def scoring_out(self) -> int:
+        """
+        Read one integer from the current open connection, computes its
+        symmetric, and send the result back to the connection
+        """
+        if self.current_connection is None:
+            self.connect()
+        self.send_str(SCR_OP)
         return self.receive_int(INT_SIZE)
 
     def send_name(self, a: str) -> None:

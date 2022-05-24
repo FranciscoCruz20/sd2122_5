@@ -74,15 +74,6 @@ class Minesweeper:
     def get_coord_value(self,x,y):
         return self._matrix[y][x]
 
-
-    #def get_jogada(self,x,y,jogada): Obsoleto/Não necessário
-        #if jogada == 'Open':
-            #pass
-        #if jogada == 'Flag':
-            #self._matrix[x][y] = 'F'
-            #self._flags += 1
-            #self._flag_coords.append(self.conjoin_coords(x,y))
-
     def check_around(self, x, y):
         range_values = [-1, 0, 1]
         stop = False

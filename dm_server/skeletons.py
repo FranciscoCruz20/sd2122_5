@@ -10,6 +10,7 @@ CRT_OP = "crt      "
 OPN_OP = "opn      "
 FLG_OP = "flg      "
 NAM_OP = "nam      "
+SCR_OP = "scr      "
 BYE_OP = "bye      "
 STOP_SERVER_OP = "terminate"
 PORT = 35000
@@ -41,12 +42,17 @@ class GameServer(Socket):
         a = self.receive_int(INT_SIZE)
         b = self.receive_int(INT_SIZE)
         c = self.receive_int(INT_SIZE)
-        self._server.create_grid(a, b, c)
+        result = self._server.create_grid(a, b, c)
+        self.send_int(result, INT_SIZE)
 
     def flag_it_up(self) -> None:
         a = self.receive_int(INT_SIZE)
         b = self.receive_int(INT_SIZE)
         self._server.get_flagged(a, b)
+
+    def scoring_in(self) -> None:
+       result =  self._server.get_score()
+       self.send_int(result, INT_SIZE)
 
     def name_on_the_list(self) -> None:
         a = self.receive_str(COMMAND_SIZE)
@@ -87,6 +93,8 @@ class GameServer(Socket):
             self.flag_it_up()
         elif request_type == NAM_OP:
             self.name_on_the_list()
+        elif request_type == SCR_OP:
+            self.scoring_in()
         elif request_type == BYE_OP:
             last_request = True
         elif request_type == STOP_SERVER_OP:
