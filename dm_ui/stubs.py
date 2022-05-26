@@ -8,6 +8,7 @@ OPN_OP = "opn      "
 FLG_OP = "flg      "
 NAM_OP = "nam      "
 SCR_OP = "scr      "
+CHK_OP = "chk      "
 BYE_OP = "bye      "
 STOP_SERVER_OP = "terminate"
 SERVER_ADDRESS = "localhost"
@@ -79,6 +80,19 @@ class GameServer(Socket):
         self.send_str(FLG_OP)
         self.send_int(a, INT_SIZE)
         self.send_int(b, INT_SIZE)
+
+    def checking_in(self, a: int,  b: int) -> int:
+        list_to_receive = []
+        if self.current_connection is None:
+            self.connect()
+        self.send_str(CHK_OP)
+        self.send_int(a, INT_SIZE)
+        self.send_int(b, INT_SIZE)
+        size = self.receive_int(INT_SIZE)
+        for i in range(size):
+            list_to_receive.append(self.receive_int(INT_SIZE))
+        print(list_to_receive)
+        return list_to_receive
 
     def connect(self):
         self.current_connection = socket.socket()

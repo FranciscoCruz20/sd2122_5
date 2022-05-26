@@ -11,6 +11,7 @@ class Minesweeper:
     self._tiles = 0
     self._score = 0
     self._flags = 0
+    self._list_to_send = []
     self._flag_coords = []
     self._name_list = []
 
@@ -82,21 +83,357 @@ class Minesweeper:
   def get_coord_value(self,x,y):
       return self._matrix[y][x]
 
-  def check_around(self, x, y):
-      range_values = [-1, 0, 1]
-      if self._matrix[x][y] != 0:
-          pass
-      else:
-          for i in range_values:
-              for j in range_values:
-                  if self._matrix[x + j][y + i] == 0:
-                      self._matrix[x + j][y + i] = ' '
-      if x + 1 != self._width and y + 1 != self._height:
-          self.check_around(x, y + 1)
-          self.check_around(x + 1, y)
-          if x + 1 != self._width and y + 1 != self._height:
-            self.check_around(x, y + 1)
-            self.check_around(x + 1, y)
+  def check_around2(self, x, y):
+      #print('X = ' + str(x) + 'Y = ' + str(y))
+      print(x,y)
+      print(self._list_to_send)
+
+      # Para os limtes inferiores do tabuleiro
+
+      if y == self._height - 1:
+          if x == self._width - 1:
+              if self._matrix[self._width - 1][self._height - 1] != 0:
+                  pass
+              else:
+                  self._matrix[self._width - 1][self._height - 1] = ' '
+                  self._list_to_send.append(self._width - 1)
+                  self._list_to_send.append(self._height - 1)
+
+              if self._matrix[self._width - 2][self._height - 1] != 0:
+                  pass
+              else:
+                  self._matrix[self._width - 2][self._height - 1] = ' '
+                  self._list_to_send.append(self._width - 2)
+                  self._list_to_send.append(self._height - 1)
+
+              if self._matrix[self._width - 1][self._height - 2] != 0:
+                  pass
+              else:
+                  self._matrix[self._width - 1][self._height - 2] = ' '
+                  self._list_to_send.append(self._width - 1)
+                  self._list_to_send.append(self._height - 2)
+
+              if self._matrix[self._width - 2][self._height - 2] != 0:
+                  pass
+              else:
+                  self._matrix[self._width - 2][self._height - 2] = ' '
+                  self._list_to_send.append(self._width - 2)
+                  self._list_to_send.append(self._height - 2)
+
+
+
+          elif x == 0:
+
+              if self._matrix[0][self._height - 1] != 0:
+                  pass
+              else:
+                  self._matrix[0][self._height - 1] = ' '
+                  self._list_to_send.append(0)
+                  self._list_to_send.append(self._height - 1)
+
+              if self._matrix[1][self._height - 1] != 0:
+                  pass
+              else:
+                  self._matrix[0][self._height - 1] = ' '
+                  self._list_to_send.append(0)
+                  self._list_to_send.append(self._height - 1)
+
+              if self._matrix[0][self._height - 2] != 0:
+                  pass
+              else:
+                  self._matrix[0][self._height - 2] = ' '
+                  self._list_to_send.append(0)
+                  self._list_to_send.append(self._height - 2)
+
+              if self._matrix[1][self._height - 2] != 0:
+                  pass
+              else:
+                  self._matrix[1][self._height - 2] = ' '
+                  self._list_to_send.append(1)
+                  self._list_to_send.append(self._height - 2)
+
+      # Para os limtes superiores do tabuleiro
+      elif y == 0:
+          if x == self._width - 1:
+              if self._matrix[self._width - 1][0] != 0:
+                  pass
+              else:
+                  self._matrix[self._width - 1][0] = ' '
+                  self._list_to_send.append(self._width - 1)
+                  self._list_to_send.append(0)
+
+              if self._matrix[self._width - 2][0] != 0:
+                  pass
+              else:
+                  self._matrix[self._width - 2][0] = ' '
+                  self._list_to_send.append(self._width - 2)
+                  self._list_to_send.append(0)
+
+              if self._matrix[self._width - 1][1] != 0:
+                  pass
+              else:
+                  self._matrix[self._width - 1][1] = ' '
+                  self._list_to_send.append(self._width - 1)
+                  self._list_to_send.append(1)
+
+              if self._matrix[self._width - 2][1] != 0:
+                  pass
+              else:
+                  self._matrix[self._width - 2][1] = ' '
+                  self._list_to_send.append(self._width - 2)
+                  self._list_to_send.append(1)
+
+          elif x == 0:
+              if self._matrix[0][0] != 0:
+                  pass
+              else:
+                  self._matrix[0][0] = ' '
+                  self._list_to_send.append(0)
+                  self._list_to_send.append(0)
+
+              if self._matrix[1][0] != 0:
+                  pass
+              else:
+                  self._matrix[1][0] = ' '
+                  self._list_to_send.append(1)
+                  self._list_to_send.append(0)
+                  self.check_around2(1, 0)
+
+              if self._matrix[0][1] != 0:
+                  pass
+              else:
+                  self._matrix[0][1] = ' '
+                  self._list_to_send.append(0)
+                  self._list_to_send.append(1)
+                  self.check_around2(0, 1)
+
+              if self._matrix[1][1] != 0:
+                  pass
+              else:
+                  self._matrix[1][1] = ' '
+                  self._list_to_send.append(1)
+                  self._list_to_send.append(1)
+                  self.check_around2(1, 1)
+
+          else:
+              if self._matrix[x][0] != 0:
+                  pass
+              else:
+                  self._matrix[x][0] = ' '
+                  self._list_to_send.append(x)
+                  self._list_to_send.append(0)
+
+              if self._matrix[x - 1][0] != 0:
+                  pass
+              else:
+                  self._matrix[x - 1][0] = ' '
+                  self._list_to_send.append(x - 1)
+                  self._list_to_send.append(0)
+
+              if self._matrix[x + 1][0] != 0:
+                  pass
+              else:
+                  self._matrix[x + 1][0] = ' '
+                  self._list_to_send.append(x + 1)
+                  self._list_to_send.append(0)
+
+
+      elif x != 0 and x != self._width - 1 and y != 0 and y != self._height - 1:
+          # Centro
+          try:
+              if self._matrix[x][y] == 0:
+                  self._matrix[x][y] = ' '
+                  self._list_to_send.append(x)
+                  self._list_to_send.append(y)
+                  self.check_around2(x, y)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x) + ' Y = ' + str(y))
+              pass
+
+          # Centro Direito
+          try:
+              if self._matrix[x + 1][y] == 0:
+                  self._matrix[x + 1][y] = ' '
+                  self._list_to_send.append(x + 1)
+                  self._list_to_send.append(y)
+                  self.check_around2(x + 1, y)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x+1) + ' Y = ' + str(y))
+              pass
+
+          # Centro Esquerdo
+          try:
+              if self._matrix[x - 1][y] == 0:
+                  self._matrix[x - 1][y] = ' '
+                  self._list_to_send.append(x - 1)
+                  self._list_to_send.append(y)
+                  self.check_around2(x - 1, y)
+              else:
+                  pass
+
+          except IndexError:
+              # print('X = ' + str(x-1) + ' Y = ' + str(y))
+              pass
+
+          # Baixo Meio
+          try:
+              if self._matrix[x][y + 1] == 0:
+                  self._matrix[x][y + 1] = ' '
+                  self._list_to_send.append(x)
+                  self._list_to_send.append(y + 1)
+                  self.check_around2(x, y + 1)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x) + ' Y = ' + str(y+1))
+              pass
+
+          # Baixo Esquerda
+          try:
+              if self._matrix[x - 1][y + 1] == 0:
+                  self._matrix[x - 1][y + 1] = ' '
+                  self._list_to_send.append(x - 1)
+                  self._list_to_send.append(y + 1)
+                  self.check_around2(x - 1, y + 1)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x-1) + ' Y = ' + str(y+1))
+              pass
+
+          # Baixo Direita
+          try:
+              if self._matrix[x + 1][y + 1] == 0:
+                  self._matrix[x + 1][y + 1] = ' '
+                  self._list_to_send.append(x + 1)
+                  self._list_to_send.append(y + 1)
+                  self.check_around2(x + 1, y + 1)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x+1) + ' Y = ' + str(y+1))
+              pass
+
+          # Cima meio
+          try:
+              if self._matrix[x][y - 1] == 0:
+                  self._matrix[x][y - 1] = ' '
+                  self._list_to_send.append(x)
+                  self._list_to_send.append(y - 1)
+                  self.check_around2(x, y - 1)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x) + ' Y = ' + str(y-1))
+              pass
+
+          # Cima direita
+          try:
+              if self._matrix[x + 1][y - 1] == 0:
+                  self._matrix[x + 1][y - 1] = ' '
+                  self._list_to_send.append(x + 1)
+                  self._list_to_send.append(y - 1)
+                  self.check_around2(x + 1, y - 1)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x+1) + ' Y = ' + str(y-1))
+              pass
+
+          # Cima Esquerda
+          try:
+              if self._matrix[x - 1][y - 1] == 0:
+                  self._matrix[x - 1][y - 1] = ' '
+                  self._list_to_send.append(x - 1)
+                  self._list_to_send.append(y - 1)
+                  self.check_around2(x - 1, y - 1)
+              else:
+                  pass
+
+          except IndexError:
+              # print('X = ' + str(x-1) + ' Y = ' + str(y-1))
+              pass
+
+      elif x == 0 and y != 0 or y != self._height - 1:
+          try:
+              if self._matrix[x + 1][y] == 0:
+                  self._matrix[x + 1][y] = ' '
+                  self._list_to_send.append(x + 1)
+                  self._list_to_send.append(y)
+                  self.check_around2(x + 1, y)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x+1) + ' Y = ' + str(y))
+              pass
+
+          try:
+              if self._matrix[x][y - 1] == 0:
+                  self._matrix[x][y - 1] = ' '
+                  self._list_to_send.append(x)
+                  self._list_to_send.append(y - 1)
+                  self.check_around2(x, y - 1)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x) + ' Y = ' + str(y-1))
+              pass
+
+          try:
+              if self._matrix[x][y + 1] == 0:
+                  self._matrix[x][y + 1] = ' '
+                  self._list_to_send.append(x)
+                  self._list_to_send.append(y + 1)
+                  self.check_around2(x, y + 1)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x) + ' Y = ' + str(y+1))
+              pass
+
+      elif x != 0 and y == 0 or y != self._height - 1:
+          try:
+              if self._matrix[x + 1][y] == 0:
+                  self._matrix[x + 1][y] = ' '
+                  self._list_to_send.append(x + 1)
+                  self._list_to_send.append(y)
+                  self.check_around2(x + 1, y)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x + 1) + ' Y = ' + str(y))
+              pass
+
+          try:
+              if self._matrix[x][y] == 0:
+                  self._matrix[x][y] = ' '
+                  self._list_to_send.append(x)
+                  self._list_to_send.append(y)
+                  self.check_around2(x, y)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x) + ' Y = ' + str(y))
+              pass
+
+          try:
+              if self._matrix[x][y + 1] == 0:
+                  self._matrix[x][y + 1] = ' '
+                  self._list_to_send.append(x)
+                  self._list_to_send.append(y + 1)
+                  self.check_around2(x, y + 1)
+              else:
+                  pass
+          except IndexError:
+              # print('X = ' + str(x) + ' Y = ' + str(y + 1))
+              pass
+
+  def get_list_to_send(self):
+      return self._list_to_send
 
   def file_read_write(self, a: str):
     name_not_here = False

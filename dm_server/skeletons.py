@@ -2,6 +2,7 @@ import logging
 import socket
 from game import Minesweeper as minesweeper
 from sockets_mod import Socket
+import pickle
 import csv
 
 COMMAND_SIZE = 9
@@ -11,6 +12,7 @@ OPN_OP = "opn      "
 FLG_OP = "flg      "
 NAM_OP = "nam      "
 SCR_OP = "scr      "
+CHK_OP = "chk      "
 BYE_OP = "bye      "
 STOP_SERVER_OP = "terminate"
 PORT = 35000
@@ -54,6 +56,18 @@ class GameServer(Socket):
        result =  self._server.get_score()
        self.send_int(result, INT_SIZE)
 
+    def checking_out(self):
+        a = self.receive_int(INT_SIZE)
+        b = self.receive_int(INT_SIZE)
+        self._server.check_around2(a, b)
+        result = self._server.get_list_to_send()
+        self.send_int(len(result), INT_SIZE)
+        print("here")
+        for i in result:
+            self.send_int(i, INT_SIZE)
+        print(result)
+
+
     def name_on_the_list(self) -> None:
         a = self.receive_str(COMMAND_SIZE)
         self._server.file_read_write(a)
@@ -95,6 +109,8 @@ class GameServer(Socket):
             self.name_on_the_list()
         elif request_type == SCR_OP:
             self.scoring_in()
+        elif request_type == CHK_OP:
+            self.checking_out()
         elif request_type == BYE_OP:
             last_request = True
         elif request_type == STOP_SERVER_OP:

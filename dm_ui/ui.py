@@ -69,7 +69,8 @@ class Ui:
         if choice == 'Open':
             pos_info_char = self._server.open_position(coord_y-1,coord_x-1)
             if pos_info_char == 0:
-                self.check_around(coord_x-1,coord_y-1)
+                zero_list = self._server.checking_in(coord_y,coord_x)
+                self.check_around(zero_list)
                 self.choice_play()
             elif pos_info_char == 9:
                 self._matrix[coord_y - 1][coord_x - 1] = chr(184)
@@ -85,20 +86,17 @@ class Ui:
             self.choice_play()
 
 
-    def check_around(self, x, y):
-        range_values=[-1,0,1]
-        if self._matrix[x][y]!='#':
-            pass
-        else:
-            for i in range_values:
-                for j in range_values:
-                    if self._matrix[x+j][y+i] == '#':
-                        self._matrix[x+j][y+i] = ' '
+    def check_around(self, z_list: list):
+        total_len = len(z_list)
+        cont = 0
+        for i in range(total_len):
+            if cont == total_len - 1 :
+                break
+            else:
+                self._matrix[z_list[i]][z_list[i + 1]] = ' '
+                self._tiles -= 1
+            cont += 1
 
-
-        if x+1!= self._width and y+1!= self._height:
-            self.check_around(x, y + 1)
-            self.check_around(x + 1, y)
 
     def jogada(self):
 
