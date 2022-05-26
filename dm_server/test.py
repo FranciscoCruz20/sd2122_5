@@ -12,6 +12,7 @@ class Minesweeper:
         self._flags = 0
         self._flag_coords = []
 
+
     def create_grid(self,x,y):
         self._width = x
         self._height = y
@@ -19,35 +20,35 @@ class Minesweeper:
         bomb_perc = random.randrange(5,24)
         bomb_perc = (bomb_perc * 100) / (self._width * self._height)
         for i in range(round(bomb_perc)):
-            x_rng = random.randrange(0,self._width)
-            y_rng = random.randrange(0,self._height)
+            x_rng = random.randrange(0, self._width)
+            y_rng = random.randrange(0, self._height)
             conj = self.conjoin_coords(str(x_rng),str(y_rng))
             if conj not in self._bomb_coords:
                 self._matrix[y_rng][x_rng] = 9
                 self._bomb_coords.append(conj)
             #Calcular o valores das casas ao redor da bomba
-                if (x_rng >=0 and x_rng <= self._width-2) and (y_rng >= 0 and y_rng <= self._height-1) and self._matrix[y_rng][x_rng + 1] != 9:
+                if (x_rng >= 0 and x_rng <= self._width - 2) and (y_rng >= 0 and y_rng <= self._height - 1) and self._matrix[y_rng][x_rng + 1] != 9:
                     self._matrix[y_rng][x_rng + 1] += 1 # center right
 
-                if (x_rng >=1 and x_rng <= self._width-1) and (y_rng >= 0 and y_rng <= self._height-1) and self._matrix[y_rng][x_rng - 1] != 9:
+                if (x_rng >= 1 and x_rng <= self._width - 1) and (y_rng >= 0 and y_rng <= self._height - 1) and self._matrix[y_rng][x_rng - 1] != 9:
                     self._matrix[y_rng][x_rng - 1] += 1  # center left
 
-                if (x_rng >= 1 and x_rng <= self._width-1) and (y_rng >= 1 and y_rng <= self._height) and self._matrix[y_rng - 1][x_rng - 1] != 9:
+                if (x_rng >= 1 and x_rng <= self._width - 1) and (y_rng >= 1 and y_rng <= self._height) and self._matrix[y_rng - 1][x_rng - 1] != 9:
                     self._matrix[y_rng - 1][x_rng - 1] += 1  # top left
 
-                if (x_rng >= 0 and x_rng <= self._height-2) and (y_rng >= 1 and y_rng <= self._height-1) and self._matrix[y_rng - 1][x_rng + 1] != 9:
+                if (x_rng >= 0 and x_rng <= self._height - 2) and (y_rng >= 1 and y_rng <= self._height - 1) and self._matrix[y_rng - 1][x_rng + 1] != 9:
                     self._matrix[y_rng - 1][x_rng + 1] += 1  # top right
 
-                if (x_rng >= 0 and x_rng <= self._height-1) and (y_rng >= 1 and y_rng <= self._height-1) and self._matrix[y_rng - 1][x_rng] != 9:
+                if (x_rng >= 0 and x_rng <= self._height - 1) and (y_rng >= 1 and y_rng <= self._height - 1) and self._matrix[y_rng - 1][x_rng] != 9:
                     self._matrix[y_rng - 1][x_rng] += 1  # top center
 
-                if (x_rng >=0 and x_rng <= self._height-2) and (y_rng >= 0 and y_rng <= self._height-2) and self._matrix[y_rng + 1][x_rng + 1] != 9:
+                if (x_rng >= 0 and x_rng <= self._height - 2) and (y_rng >= 0 and y_rng <= self._height - 2) and self._matrix[y_rng + 1][x_rng + 1] != 9:
                     self._matrix[y_rng + 1][x_rng + 1] += 1  # bottom right
 
-                if (x_rng >= 1 and x_rng <= self._height-1) and (y_rng >= 0 and y_rng <= self._height-2) and self._matrix[y_rng + 1][x_rng - 1] != 9:
+                if (x_rng >= 1 and x_rng <= self._height - 1) and (y_rng >= 0 and y_rng <= self._height - 2) and self._matrix[y_rng + 1][x_rng - 1] != 9:
                     self._matrix[y_rng + 1][x_rng - 1] += 1  # bottom left
 
-                if (x_rng >= 0 and x_rng <= self._height-1) and (y_rng >= 0 and y_rng <= self._height-2) and self._matrix[y_rng + 1][x_rng] != 9:
+                if (x_rng >= 0 and x_rng <= self._height - 1) and (y_rng >= 0 and y_rng <= self._height - 2) and self._matrix[y_rng + 1][x_rng] != 9:
                     self._matrix[y_rng + 1][x_rng] += 1  # bottom center
 
     def conjoin_coords(self, x, y):
@@ -114,99 +115,122 @@ class Minesweeper:
 
 
     def check_around2(self, x, y):
+        print('X = ' + str(x) + 'Y = ' + str(y))
+        print(self._matrix[x][y])
 
         #Para os limtes inferiores do tabuleiro
-        if y == self._height:
-            if x == self._width:
-                if self._matrix[self._width][self._height] != 0:
-                    pass
-                else:
-                    self._matrix[self._width][self._height] = ' '
 
-                if self._matrix[self._width-1][self._height] != 0:
-                    pass
-                else:
-                    self._matrix[self._width][self._height] = ' '
-
-                if self._matrix[self._width][self._height-1] != 0:
-                    pass
-                else:
-                    self._matrix[self._width][self._height-1] = ' '
-
+        if y == self._height-1:
+            if x == self._width-1:
                 if self._matrix[self._width-1][self._height-1] != 0:
                     pass
                 else:
                     self._matrix[self._width-1][self._height-1] = ' '
 
-
-
-            elif x == 1:
-
-                if self._matrix[1][self._height] != 0:
+                if self._matrix[self._width - 2][self._height-1] != 0:
                     pass
                 else:
-                    self._matrix[1][self._height] = ' '
+                    self._matrix[self._width-2][self._height-1] = ' '
 
-                if self._matrix[2][self._height] != 0:
+                if self._matrix[self._width-1][self._height - 2] != 0:
                     pass
                 else:
-                    self._matrix[1][self._height] = ' '
+                    self._matrix[self._width-1][self._height - 2] = ' '
 
-                if self._matrix[1][self._height - 1] != 0:
+                if self._matrix[self._width - 2][self._height - 2] != 0:
                     pass
                 else:
-                    self._matrix[1][self._height - 1] = ' '
+                    self._matrix[self._width - 2][self._height - 2] = ' '
 
-                if self._matrix[2][self._height - 1] != 0:
+
+
+            elif x == 0:
+
+                if self._matrix[0][self._height-1] != 0:
                     pass
                 else:
-                    self._matrix[2][self._height - 1] = ' '
+                    self._matrix[0][self._height-1] = ' '
+
+                if self._matrix[1][self._height-1] != 0:
+                    pass
+                else:
+                    self._matrix[0][self._height-1] = ' '
+
+                if self._matrix[0][self._height - 2] != 0:
+                    pass
+                else:
+                    self._matrix[0][self._height - 2] = ' '
+
+                if self._matrix[1][self._height - 2] != 0:
+                    pass
+                else:
+                    self._matrix[1][self._height - 2] = ' '
 
         # Para os limtes superiores do tabuleiro
-        elif y == 1:
-            if x == self._width:
-                if self._matrix[self._width][1] != 0:
+        elif y == 0:
+            if x == self._width-1:
+                if self._matrix[self._width-1][0] != 0:
                     pass
                 else:
-                    self._matrix[self._width][1] = ' '
+                    self._matrix[self._width-1][0] = ' '
 
-                if self._matrix[self._width - 1][1] != 0:
+                if self._matrix[self._width - 2][0] != 0:
                     pass
                 else:
-                    self._matrix[self._width][1] = ' '
+                    self._matrix[self._width-1][0] = ' '
 
-                if self._matrix[self._width][2] != 0:
+                if self._matrix[self._width-1][1] != 0:
                     pass
                 else:
-                    self._matrix[self._width][2] = ' '
+                    self._matrix[self._width-1][1] = ' '
 
-                if self._matrix[self._width - 1][2] != 0:
+                if self._matrix[self._width - 2][1] != 0:
                     pass
                 else:
-                    self._matrix[self._width - 1][2] = ' '
+                    self._matrix[self._width - 2][1] = ' '
 
-            elif x == 1:
+            elif x == 0:
+                if self._matrix[0][0] != 0:
+                    pass
+                else:
+                    self._matrix[0][0] = ' '
+
+                if self._matrix[1][0] != 0:
+                    pass
+                else:
+                    self._matrix[1][0] = ' '
+                    self.check_around2(1,0)
+
+                if self._matrix[0][1] != 0:
+                    pass
+                else:
+                    self._matrix[0][1] = ' '
+                    self.check_around2(0, 1)
+
                 if self._matrix[1][1] != 0:
                     pass
                 else:
                     self._matrix[1][1] = ' '
+                    self.check_around2(1, 1)
 
-                if self._matrix[2][1] != 0:
+            else:
+                if self._matrix[x][0] != 0:
                     pass
                 else:
-                    self._matrix[2][1] = ' '
+                    self._matrix[x][0] = ' '
 
-                if self._matrix[1][2] != 0:
+                if self._matrix[x - 1][0] != 0:
                     pass
                 else:
-                    self._matrix[1][2] = ' '
+                    self._matrix[x - 1][0] = ' '
 
-                if self._matrix[2][2] != 0:
+                if self._matrix[x + 1][0] != 0:
                     pass
                 else:
-                    self._matrix[2][2] = ' '
+                    self._matrix[x + 1][0] = ' '
 
-        elif x != 1 and x != self._width and y != 1 and y != self._height:
+
+        elif x != 0 and x != self._width-1 and y != 0 and y != self._height-1:
             #Centro
             try:
                 if self._matrix[x][y] == 0:
@@ -215,17 +239,19 @@ class Minesweeper:
                 else:
                     pass
             except IndexError:
-                print('X = ' + str(x) + ' Y = ' + str(y))
+                #print('X = ' + str(x) + ' Y = ' + str(y))
+                pass
 
             #Centro Direito
             try:
                 if self._matrix[x+1][y] == 0:
                     self._matrix[x+1][y] = ' '
-                    self.check_around2( x+ 1, y)
+                    self.check_around2(x + 1, y)
                 else:
                     pass
             except IndexError:
-                print('X = ' + str(x+1) + ' Y = ' + str(y))
+                #print('X = ' + str(x+1) + ' Y = ' + str(y))
+                pass
 
             #Centro Esquerdo
             try:
@@ -236,7 +262,8 @@ class Minesweeper:
                     pass
 
             except IndexError:
-                print('X = ' + str(x-1) + ' Y = ' + str(y))
+                #print('X = ' + str(x-1) + ' Y = ' + str(y))
+                pass
 
             #Baixo Meio
             try:
@@ -246,7 +273,8 @@ class Minesweeper:
                 else:
                     pass
             except IndexError:
-                print('X = ' + str(x) + ' Y = ' + str(y+1))
+                #print('X = ' + str(x) + ' Y = ' + str(y+1))
+                pass
 
             #Baixo Esquerda
             try:
@@ -256,7 +284,8 @@ class Minesweeper:
                 else:
                     pass
             except IndexError:
-                print('X = ' + str(x-1) + ' Y = ' + str(y+1))
+                #print('X = ' + str(x-1) + ' Y = ' + str(y+1))
+                pass
 
             #Baixo Direita
             try:
@@ -266,7 +295,8 @@ class Minesweeper:
                 else:
                     pass
             except IndexError:
-                print('X = ' + str(x+1) + ' Y = ' + str(y+1))
+                #print('X = ' + str(x+1) + ' Y = ' + str(y+1))
+                pass
 
             #Cima meio
             try:
@@ -276,7 +306,8 @@ class Minesweeper:
                 else:
                     pass
             except IndexError:
-                print('X = ' + str(x) + ' Y = ' + str(y-1))
+                #print('X = ' + str(x) + ' Y = ' + str(y-1))
+                pass
 
             #Cima direita
             try:
@@ -286,7 +317,8 @@ class Minesweeper:
                 else:
                     pass
             except IndexError:
-                print('X = ' + str(x+1) + ' Y = ' + str(y-1))
+                #print('X = ' + str(x+1) + ' Y = ' + str(y-1))
+                pass
 
             #Cima Esquerda
             try:
@@ -297,10 +329,71 @@ class Minesweeper:
                     pass
 
             except IndexError:
-                print('X = ' + str(x-1) + ' Y = ' + str(y-1))
+                #print('X = ' + str(x-1) + ' Y = ' + str(y-1))
+                pass
 
-        else:
-            pass
+        elif x == 0 and y != 0 or y != self._height-1:
+            try:
+                if self._matrix[x+1][y] == 0:
+                    self._matrix[x+1][y] = ' '
+                    self.check_around2(x + 1, y)
+                else:
+                    pass
+            except IndexError:
+                #print('X = ' + str(x+1) + ' Y = ' + str(y))
+                pass
+
+            try:
+                if self._matrix[x][y-1] == 0:
+                    self._matrix[x][y-1] = ' '
+                    self.check_around2(x, y - 1)
+                else:
+                    pass
+            except IndexError:
+                #print('X = ' + str(x) + ' Y = ' + str(y-1))
+                pass
+
+            try:
+                if self._matrix[x][y + 1] == 0:
+                    self._matrix[x][y + 1] = ' '
+                    self.check_around2(x, y + 1)
+                else:
+                    pass
+            except IndexError:
+                #print('X = ' + str(x) + ' Y = ' + str(y+1))
+                pass
+
+        elif x != 0 and y == 0 or y != self._height-1:
+            try:
+                if self._matrix[x + 1][y] == 0:
+                    self._matrix[x + 1][y] = ' '
+                    self.check_around2(x + 1, y)
+                else:
+                    pass
+            except IndexError:
+                #print('X = ' + str(x + 1) + ' Y = ' + str(y))
+                pass
+
+            try:
+                if self._matrix[x][y] == 0:
+                    self._matrix[x][y] = ' '
+                    self.check_around2(x, y)
+                else:
+                    pass
+            except IndexError:
+                #print('X = ' + str(x) + ' Y = ' + str(y))
+                pass
+
+            try:
+                if self._matrix[x][y + 1] == 0:
+                    self._matrix[x][y + 1] = ' '
+                    self.check_around2(x, y + 1)
+                else:
+                    pass
+            except IndexError:
+                #print('X = ' + str(x) + ' Y = ' + str(y + 1))
+                pass
+
 
     def exit(self):
         print("Yeet")
@@ -314,6 +407,7 @@ x_test = int(input('Cord X'))
 y_test = int(input('Cord Y'))
 obj_temp.check_around2(y_test-1,x_test-1)
 obj_temp.print_matrix()
+
 
 
 def file_read_write(a: str):
