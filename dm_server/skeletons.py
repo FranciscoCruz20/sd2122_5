@@ -22,10 +22,13 @@ LOG_FILENAME = "math-server.log"
 LOG_LEVEL = logging.DEBUG
 
 class GameServer(Socket):
+    """
+    GameServer stub (lado do servidor).
+    """
     def __init__(self, port: int, game: minesweeper) -> None:
         """
-        Creates a client given the server server to use
-        :param port: The math server port of the host the client will use
+        :param port
+        :param game
         """
         super().__init__()
         self._port = port
@@ -35,12 +38,22 @@ class GameServer(Socket):
                             format='%(asctime)s (%(levelname)s): %(message)s')
 
     def position_info(self) -> None:
+        """
+        recebe a informação da posição da casa selecionada
+        envia pó cliente o valor da casa
+        :return:
+        """
         a = self.receive_int(INT_SIZE)
         b = self.receive_int(INT_SIZE)
         result = self._server.get_coord_value(a,b)
         self.send_int(result, INT_SIZE)
 
     def generate_grid(self) -> None:
+        """
+        recebe o largura, altura e percentagem de bombas escolhido pelo cliente
+        envia o número tiles
+        :return:
+        """
         a = self.receive_int(INT_SIZE)
         b = self.receive_int(INT_SIZE)
         c = self.receive_int(INT_SIZE)
@@ -48,15 +61,32 @@ class GameServer(Socket):
         self.send_int(result, INT_SIZE)
 
     def flag_it_up(self) -> None:
+        """
+        recebe as coordenadas da casa selecionada
+        chama get_flagged
+        :return:
+        """
         a = self.receive_int(INT_SIZE)
         b = self.receive_int(INT_SIZE)
         self._server.get_flagged(a, b)
 
     def scoring_in(self) -> None:
+       """
+       chama get_score
+       envia o score
+       :return:
+       """
        result =  self._server.get_score()
        self.send_int(result, INT_SIZE)
 
     def checking_out(self):
+        """
+        recebe as coordenadas da casa selecionada, verifica as casa em redor
+        dá uma lista com as coordenadas
+        vê o tamanho da lista e envia o valor da mesma
+        envia os valores da lista até acabarem
+        :return:
+        """
         a = self.receive_int(INT_SIZE)
         b = self.receive_int(INT_SIZE)
         self._server.check_around2(a, b)
@@ -69,15 +99,19 @@ class GameServer(Socket):
 
 
     def name_on_the_list(self) -> None:
+        """
+        recebe o nome do cliente
+        guarda o nome num ficheiro csv
+        :return:
+        """
         a = self.receive_str(COMMAND_SIZE)
         self._server.file_read_write(a)
 
 
     def run(self) -> None:
         """
-        Runs the server server until the client sends a "terminate" action
+        Dá run no server até o cliente terminar a conecção
         """
-
         current_socket = socket.socket()
         current_socket.bind(('', self._port))
         current_socket.listen(1)
@@ -95,6 +129,11 @@ class GameServer(Socket):
         logging.info("Server stopped")
 
     def dispatch_request(self) -> (bool, bool):
+        """
+        recebe o comando do cliente
+        executa a funçaõ relativa ao comando do cliente
+        :return:
+        """
         request_type = self.receive_str(COMMAND_SIZE)
         keep_running = True
         last_request = False

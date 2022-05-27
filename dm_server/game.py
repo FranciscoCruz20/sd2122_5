@@ -2,7 +2,9 @@ import random
 import csv
 
 class Minesweeper:
-
+  """
+  classe do jogo
+  """
   def __init__(self):
     self._width = 9     #Minimo por default para width e height
     self._height = 9
@@ -16,6 +18,14 @@ class Minesweeper:
     self._name_list = []
 
   def create_grid(self,x,y,bomb_perc):
+    """
+    cria a matriz(tabuleiro) no lado do servidor, que o cliente não consegue ver e que não está encriptada com "#"
+    calcula também os valores das casas ao redor das bombas
+    :param x
+    :param y
+    :param bomb_perc
+    :return:tiles
+    """
     self._width = x
     self._height = y
     self._matrix = [[0 for x in range(self._width)] for y in range(self._height)]
@@ -57,12 +67,27 @@ class Minesweeper:
     return self._tiles
 
   def conjoin_coords(self, x, y):
+    """
+    transforma as cooordenadsas numa string
+    :param x
+    :param y
+    :return: string
+    """
     return str(x + "," + y)
 
   def translate_coords(self, msg: str):
+    """
+    traduz as coordenadas
+    :param msg:
+    :return:
+    """
     return
 
   def print_matrix(self):
+    """
+    dá print da matriz
+    :return:
+    """
     h = 1
     for w in range(self._width + 1):
         print(w, '', end='')
@@ -72,19 +97,42 @@ class Minesweeper:
         h += 1
 
   def get_flagged(self,x,y):
+      """
+      atríbui o score ao cliente dependendo se seleciona uma bomba ou não com uma flag
+      :param x:
+      :param y:
+      :return:
+      """
       if self._matrix[x][y] == 9:
           self._score += 1
       else:
           self._score -= 3
 
   def get_score(self):
+      """
+      dá return do score
+      :return:score
+      """
       return self._score
 
   def get_coord_value(self,x,y):
+      """
+      return dos valores da casa
+      :param x:
+      :param y:
+      :return: matriz
+      """
       return self._matrix[y][x]
 
   def check_around2(self, x, y):
-
+      """
+      verifica as casas de 0 no tabuleiro
+      coloca as coordenadas das casas numa lista
+      envia a lista
+      :param x:
+      :param y:
+      :return:
+      """
       # Para os limtes inferiores do tabuleiro
 
       if y == self._height - 1:
@@ -430,9 +478,19 @@ class Minesweeper:
               pass
 
   def get_list_to_send(self):
+      """
+      envia a lista com coordenadas das casas com zeros
+      :return: list_to_send
+      """
       return self._list_to_send
 
   def file_read_write(self, a: str):
+    """
+    lê o ficheiro csv dos nomes dos jogadores
+    escreve os nomes dos mesmo caso sejam válidos
+    :param a: nome
+    :return:
+    """
     name_not_here = False
     with open('Nomes_Jogadores', newline='') as csvfile:
         csvreader = csv.reader(csvfile)

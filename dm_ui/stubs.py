@@ -16,18 +16,22 @@ PORT = 35000
 
 class GameServer(Socket):
     """
-    A math stubs stub (client side).
+    GameServer stub (lado do cliente).
     """
 
     def __init__(self, host: str, port: int) -> None:
+        """
+        :param host:
+        :param port:
+        """
         super().__init__()
         self._host = host
         self._port = port
 
     def create_grid(self, a: int, b: int, c: int) -> int:
         """
-        Read two integers from the current open connection, adds them up,
-        and send the result back through the connection.
+        envia a largura e altura do tabueliro e também a percentagem de bombas para o servidor
+        :return: numero de casas
         """
         if self.current_connection is None:
             self.connect()
@@ -39,8 +43,8 @@ class GameServer(Socket):
 
     def open_position(self, a: int,  b: int) -> int:
         """
-        Read one integer from the current open connection, computes its
-        symmetric, and send the result back to the connection
+        envia ao servidor as coordenadas da casa selecionada e recebe o numero escondido dentro da casa
+        :return: valor da casa
         """
         if self.current_connection is None:
             self.connect()
@@ -51,8 +55,8 @@ class GameServer(Socket):
 
     def scoring_out(self) -> int:
         """
-        Read one integer from the current open connection, computes its
-        symmetric, and send the result back to the connection
+        recebe o score do cliente
+        :return: score
         """
         if self.current_connection is None:
             self.connect()
@@ -61,8 +65,9 @@ class GameServer(Socket):
 
     def send_name(self, a: str) -> None:
         """
-        Read one integer from the current open connection, computes its
-        symmetric, and send the result back to the connection
+        envia o nome do cliente
+        :param a:
+        :return:
         """
         if self.current_connection is None:
             self.connect()
@@ -72,8 +77,10 @@ class GameServer(Socket):
 
     def flagging(self, a: int,  b: int) -> int:
         """
-        Read one integer from the current open connection, computes its
-        symmetric, and send the result back to the connection
+        envia a casa que o cliente quer colocar flag
+        :param a:
+        :param b:
+        :return:
         """
         if self.current_connection is None:
             self.connect()
@@ -82,6 +89,13 @@ class GameServer(Socket):
         self.send_int(b, INT_SIZE)
 
     def checking_in(self, a: int,  b: int) -> int:
+        """
+        envia as coordenadas da casa selecionada pelo cliente
+        recebe o tamanho da lista e depois os todos os valores inteiros da lista
+        :param a:
+        :param b:
+        :return: lista de coordenadas
+        """
         list_to_receive = []
         if self.current_connection is None:
             self.connect()
@@ -95,9 +109,15 @@ class GameServer(Socket):
         return list_to_receive
 
     def connect(self):
+        """
+        Conecta-se ao servidor
+        """
         self.current_connection = socket.socket()
         self.current_connection.connect((self._host, self._port))
 
     def stop_server(self):
+        """
+        Para a conecção ao servidor
+        """
         self.send_str(STOP_SERVER_OP)
         self.current_connection.close()
