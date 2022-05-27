@@ -84,8 +84,6 @@ class Minesweeper:
       return self._matrix[y][x]
 
   def check_around2(self, x, y):
-      print('X = ' + str(x) + 'Y = ' + str(y))
-      print(self._matrix[x][y])
 
       # Para os limtes inferiores do tabuleiro
 
