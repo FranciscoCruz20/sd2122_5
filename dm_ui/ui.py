@@ -85,6 +85,11 @@ class Ui:
             self._server.flagging(coord_y,coord_x)
             self.choice_play()
 
+        elif choice == 'FlagDelete':
+            self._matrix[coord_y - 1][coord_x - 1] = '#'
+            self._server.flagging(coord_y, coord_x)
+            self.choice_play()
+
 
     def check_around(self, z_list: list):
         total_len = len(z_list)
@@ -102,16 +107,20 @@ class Ui:
     def jogada(self):
 
         choice = 0
-        while choice > 2 or choice == 0:
+        while choice > 3 or choice == 0:
             choice = int(input("Escolha uma ação\n"
                            " 1 - Abrir casa\n"
-                           " 2 - Marcar com bandeira\n->"))
+                           " 2 - Marcar com bandeira\n"
+                           " 3 - Apagar bandeira\n->"))
 
         if choice == 1:
             return 'Open'
 
         if choice == 2:
             return 'Flag'
+
+        if choice == 3:
+            return 'FlagDelete'
 
     def register_name(self):
         name = (input("Digite o seu nome de jogador:"))
