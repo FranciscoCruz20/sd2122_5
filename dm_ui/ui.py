@@ -88,9 +88,10 @@ class Ui:
 
     def check_around(self, z_list: list):
         total_len = len(z_list)
+        total_len_div_2 = round(total_len / 2)
         cont = 0
-        for i in range(total_len):
-            if cont == total_len - 1 :
+        for i in range(0,total_len,2):
+            if cont == total_len_div_2 :
                 break
             else:
                 self._matrix[z_list[i]][z_list[i + 1]] = ' '
