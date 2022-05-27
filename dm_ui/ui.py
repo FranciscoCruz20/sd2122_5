@@ -57,38 +57,41 @@ class Ui:
             print("Game Ended")
 
     def choice_play(self):
+        end_game = False
+        while end_game == False:
+            self.print_matrix()
+            coord_x = 0
+            coord_y = 0
+            while coord_x > self._width or coord_x == 0:
+                coord_x = int(input("Insira a coordenada X: "))
+            while coord_y > self._height or coord_y == 0:
+                coord_y = int(input("Insira a coordenada Y: "))
+            choice = self.jogada()
+            if choice == 'Open':
+                pos_info_char = self._server.open_position(coord_x-1,coord_y-1)
+                print(pos_info_char)
+                if pos_info_char == 0:
+                    zero_list = self._server.checking_in(coord_y,coord_x)
+                    self.check_around(zero_list)
+                elif pos_info_char == 9:
+                    self._matrix[coord_y - 1][coord_x - 1] = chr(184)
+                    print("Bomba encontrada - Score final = 0")
+                    end_game = True
+                elif self._tiles == 0 and pos_info_char != 9:
+                    print("Victory - ", self._server.scoring_out())
+                    end_game = True
+                else:
+                    self._matrix[coord_y - 1][coord_x - 1] = str(pos_info_char)
 
-        self.print_matrix()
-        coord_x = 0
-        coord_y = 0
-        while coord_x > self._width or coord_x == 0:
-            coord_x = int(input("Insira a coordenada X: "))
-        while coord_y > self._height or coord_y == 0:
-            coord_y = int(input("Insira a coordenada Y: "))
-        choice = self.jogada()
-        if choice == 'Open':
-            pos_info_char = self._server.open_position(coord_y-1,coord_x-1)
-            if pos_info_char == 0:
-                zero_list = self._server.checking_in(coord_y,coord_x)
-                self.check_around(zero_list)
-                self.choice_play()
-            elif pos_info_char == 9:
-                self._matrix[coord_y - 1][coord_x - 1] = chr(184)
-                print("Bomba encontrada - Score final = 0")
-            elif self._tiles == 0 and pos_info_char != 9:
-                print("Victory - ", self._server.scoring_out())
-            else:
-                self._matrix[coord_y - 1][coord_x - 1] = str(pos_info_char)
 
-        elif choice == 'Flag':
-            self._matrix[coord_y-1][coord_x-1]='F'
-            self._server.flagging(coord_y,coord_x)
-            self.choice_play()
+            elif choice == 'Flag':
+                self._matrix[coord_y-1][coord_x-1]='F'
+                self._server.flagging(coord_y,coord_x)
 
-        elif choice == 'FlagDelete':
-            self._matrix[coord_y - 1][coord_x - 1] = '#'
-            self._server.flagging(coord_y, coord_x)
-            self.choice_play()
+
+            elif choice == 'FlagDelete':
+                self._matrix[coord_y - 1][coord_x - 1] = '#'
+                self._server.flagging(coord_y, coord_x)
 
 
     def check_around(self, z_list: list):
