@@ -84,9 +84,8 @@ class Minesweeper:
       return self._matrix[y][x]
 
   def check_around2(self, x, y):
-      #print('X = ' + str(x) + 'Y = ' + str(y))
-      print(x,y)
-      print(self._list_to_send)
+      print('X = ' + str(x) + 'Y = ' + str(y))
+      print(self._matrix[x][y])
 
       # Para os limtes inferiores do tabuleiro
 
@@ -134,8 +133,8 @@ class Minesweeper:
               if self._matrix[1][self._height - 1] != 0:
                   pass
               else:
-                  self._matrix[0][self._height - 1] = ' '
-                  self._list_to_send.append(0)
+                  self._matrix[1][self._height - 1] = ' '
+                  self._list_to_send.append(1)
                   self._list_to_send.append(self._height - 1)
 
               if self._matrix[0][self._height - 2] != 0:
