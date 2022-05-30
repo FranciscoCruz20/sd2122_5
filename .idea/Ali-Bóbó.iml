@@ -5,7 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/dm_server" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/dm_ui" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.9 (sd2122_5)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (sd21225)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
