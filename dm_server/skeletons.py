@@ -112,6 +112,7 @@ class GameServer(Socket):
         """
         Dá run no server até o cliente terminar a conecção
         """
+
         current_socket = socket.socket()
         current_socket.bind(('', self._port))
         current_socket.listen(1)
